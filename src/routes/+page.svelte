@@ -37,33 +37,42 @@
 
 <div
     bind:this={scrollContainer}
-    class="main h-screen w-full overflow-y-auto text-gray-200 select-none"
+    class="main snap-y snap-mandatory h-screen w-full overflow-y-auto text-gray-200 select-none"
 >
     <!-- Hero -->
-    <section class="bio h-5/6 flex flex-col items-center justify-center p-5">
-        <div class="text-left max-w-screen-xl">
-            <div class="text-white text-5xl font-bold mb-4">Hello, I'm</div>
-            <div
-                class="name text-[6rem] font-normal leading-[0.8] -ml-2 tracking-tight gradient-text mb-6"
-            >
-                Raima Falor
+    <section
+        class="bio snap-start h-5/6 flex flex-col items-center justify-center p-5"
+    >
+        <div class="flex gap-20 items-center">
+            <img
+                class="rounded-full w-64 border-3 border-white"
+                src="https://media.licdn.com/dms/image/v2/D5603AQFi7Qng77F2KQ/profile-displayphoto-shrink_800_800/B56ZdCCcF9HoAc-/0/1749159625765?e=1756944000&v=beta&t=yi7plZms_VSjEt2p7MVonPzlpRpREHqoGqDGtKt2V9c"
+                alt=""
+            />
+            <div class="text-left max-w-screen-xl">
+                <div class="text-white text-5xl font-bold mb-4">Hi, I'm</div>
+                <div
+                    class="name text-[6rem] font-normal leading-[0.8] -ml-2 tracking-tight gradient-text mb-6"
+                >
+                    Raima Falor
+                </div>
+                <p class="mt-8 text-white text-xl max-w-xl">
+                    I'm a second year Computer Science student at Santa Clara
+                    University, driven by a passion for creating meaningful
+                    digital experiences through web and UX design. Through
+                    tutoring, app design projects, and community leadership
+                    initiatives, I've developed collaborative skills that bridge
+                    the gap between innovative ideas and impactful execution.
+                </p>
+                <p class="mt-4 font-bold text-white text-lg max-w-xl">
+                    Below, you'll see interactive demos of my latest projects :)
+                </p>
             </div>
-            <p class="mt-12 text-white text-lg max-w-xl">
-                I'm a first-year Computer Science student at Santa Clara
-                University, driven by a passion for creating meaningful digital
-                experiences through web and UX design. Through tutoring, app
-                design projects, and community leadership initiatives, I've
-                developed collaborative skills that bridge the gap between
-                innovative ideas and impactful execution.
-            </p>
-            <p class="mt-4 font-bold text-white text-lg max-w-xl">
-                Below, you'll see interactive demos of my latest projects :)
-            </p>
         </div>
     </section>
 
     <!-- Project 1: Campus Cues -->
-    <section class="h-full w-full relative grid project-section">
+    <section class="snap-start h-full w-full relative grid project-section">
         <div
             class="title-section grid place-items-center text-white px-12 my-6 rounded-tr-lg rounded-br-lg"
         >
@@ -83,14 +92,16 @@
         </div>
         <div class="iframe-wrapper grid place-items-center w-full h-full p-6">
             <iframe
-                class="w-full h-full rounded-lg shadow-sm border-none smooth-anim"
+                class="{progress < 1
+                    ? 'pointer-events-none'
+                    : ''} w-full h-full rounded-lg shadow-md border-none smooth-anim"
                 src="https://campuscues.vercel.app/?demo"
                 allowfullscreen
                 style="
-            transform-origin: right center;
-            transform: rotateY({angle}deg) scale({scale});
-            opacity: {opacity};
-          "
+                    transform-origin: right center;
+                    transform: rotateY({angle}deg) scale({scale});
+                    opacity: {opacity};
+                "
             ></iframe>
         </div>
     </section>
@@ -98,16 +109,11 @@
 
 <style>
     .main {
-        background: linear-gradient(
-            to left,
-            #ff6b6b,
-            #e4af0d,
-            #12a3c4,
-            #01aba6
-        );
+        background: linear-gradient(to left, #e7c14f, #1398b6, #01aba6);
         background-size: 200% 200%;
         background-position: 0% 50%;
-        /* animation: gradientShift 1s ease-out forwards; */
+        scroll-behavior: smooth;
+        scroll-snap-stop: always;
     }
 
     .gradient-text {
