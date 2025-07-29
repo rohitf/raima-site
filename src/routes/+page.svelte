@@ -94,7 +94,7 @@
             <iframe
                 class="{progress < 1
                     ? 'pointer-events-none'
-                    : ''} w-full h-full rounded-lg shadow-md border-none smooth-anim"
+                    : ''} w-full h-full rounded-lg border-none smooth-anim"
                 src="https://campuscues.vercel.app/?demo"
                 allowfullscreen
                 style="
@@ -160,6 +160,17 @@
 
     .iframe-wrapper {
         perspective: 1000px;
+    }
+
+    iframe {
+        transform-style: preserve-3d;
+        backface-visibility: hidden;
+
+        /* Reduced shadows for subtle depth */
+        box-shadow:
+            0 0 0 1px rgba(255, 255, 255, 0.2),
+            0 2px 6px rgba(0, 0, 0, 0.1),
+            0 4px 12px rgba(0, 0, 0, 0.08);
     }
 
     .smooth-anim {
