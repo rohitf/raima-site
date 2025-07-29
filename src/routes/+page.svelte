@@ -1,27 +1,31 @@
 <script>
     import { onMount } from 'svelte';
-    let iframeVisible = false;
-    let firstSectionHeight = 0;
     let scrollContainer;
+    let scrollTop = 0;
+    let raf;
 
+    // Throttled scroll handler using requestAnimationFrame
     function handleScroll() {
-        if (!iframeVisible && scrollContainer.scrollTop >= firstSectionHeight) {
-            setTimeout(() => {
-                iframeVisible = true;
-                scrollContainer.removeEventListener('scroll', handleScroll);
-            }, 200); // Delay to allow for scroll animation
-        }
+        if (raf) cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+            scrollTop = scrollContainer.scrollTop;
+        });
     }
 
     onMount(() => {
-        // calculate height of the first snap-start section
-        const firstSection = document.querySelector('.bio');
-        firstSectionHeight = firstSection
-            ? firstSection.offsetHeight - 20
-            : window.innerHeight;
-        // listen on the scrollable main container, not window
-        scrollContainer.addEventListener('scroll', handleScroll);
+        scrollContainer.addEventListener('scroll', handleScroll, {
+            passive: true,
+        });
     });
+
+    // Compute animation progress [0..1]
+    $: progress = Math.min(scrollTop / 700, 1);
+    // Angle from 90deg to 0
+    $: angle = 90 * (1 - progress);
+    // Scale from 0 (hidden) to 1 (full size)
+    $: scale = progress;
+    // Opacity from 0 to 1
+    $: opacity = progress;
 </script>
 
 <svelte:head>
@@ -33,12 +37,10 @@
 
 <div
     bind:this={scrollContainer}
-    class="main h-screen w-full overflow-y-auto snap-y snap-mandatory text-gray-200 select-none"
+    class="main h-screen w-full overflow-y-auto text-gray-200 select-none"
 >
     <!-- Hero -->
-    <section
-        class="bio snap-start h-5/6 flex flex-col items-center justify-center p-5"
-    >
+    <section class="bio h-5/6 flex flex-col items-center justify-center p-5">
         <div class="text-left max-w-screen-xl">
             <div class="text-white text-5xl font-bold mb-4">Hello, I'm</div>
             <div
@@ -55,14 +57,13 @@
                 innovative ideas and impactful execution.
             </p>
             <p class="mt-4 font-bold text-white text-lg max-w-xl">
-                Below, you'll see some of my latest projects as an interactive
-                demo :)
+                Below, you'll see interactive demos of my latest projects :)
             </p>
         </div>
     </section>
 
     <!-- Project 1: Campus Cues -->
-    <section class="snap-start h-full w-full relative grid project-section">
+    <section class="h-full w-full relative grid project-section">
         <div
             class="title-section grid place-items-center text-white px-12 my-6 rounded-tr-lg rounded-br-lg"
         >
@@ -80,14 +81,16 @@
                 </ul>
             </div>
         </div>
-        <div
-            class="iframe-wrapper grid place-items-center w-full h-full p-6"
-            class:visible={iframeVisible}
-        >
+        <div class="iframe-wrapper grid place-items-center w-full h-full p-6">
             <iframe
-                class="w-full h-full rounded-lg shadow-sm border-none"
+                class="w-full h-full rounded-lg shadow-sm border-none smooth-anim"
                 src="https://campuscues.vercel.app/?demo"
                 allowfullscreen
+                style="
+            transform-origin: right center;
+            transform: rotateY({angle}deg) scale({scale});
+            opacity: {opacity};
+          "
             ></iframe>
         </div>
     </section>
@@ -107,12 +110,6 @@
         /* animation: gradientShift 1s ease-out forwards; */
     }
 
-    @keyframes gradientShift {
-        to {
-            background-position: 0% 50%;
-        }
-    }
-
     .gradient-text {
         background-image: linear-gradient(to right, #ffd93d, #ffd93d);
         background-clip: text;
@@ -124,18 +121,8 @@
         perspective: 1000px;
     }
 
-    .iframe-wrapper iframe {
-        transform-origin: right center;
-        transform: rotateY(90deg);
-        opacity: 0;
-        transition:
-            transform 0.6s ease-out,
-            opacity 0.6s ease-out;
-    }
-
-    .iframe-wrapper.visible iframe {
-        transform: rotateY(0deg);
-        opacity: 1;
+    .smooth-anim {
+        will-change: transform, opacity;
     }
 
     .name {
