@@ -3,19 +3,70 @@
     let scrollContainer;
     let scrollTop = 0;
     let raf;
+    let sections;
+    let sectionColors = [
+        '#1398b6', // Hero section (keep the same)
+        '#5172ff', // Project 1: Midway blue-magenta (blend of #1398b6 and #e040fb)
+        '#a259ff', // Project 2: More purple
+        '#000000', // Last section: Fade to black
+    ];
+    let backgroundColor = sectionColors[0];
 
     // Throttled scroll handler using requestAnimationFrame
     function handleScroll() {
         if (raf) cancelAnimationFrame(raf);
         raf = requestAnimationFrame(() => {
             scrollTop = scrollContainer.scrollTop;
+            updateBackgroundColor();
         });
     }
 
+    function updateBackgroundColor() {
+        const scrollHeight = scrollContainer.scrollHeight - window.innerHeight;
+        const currentScroll = scrollTop;
+        const scrollFraction = currentScroll / scrollHeight;
+
+        const colorStops = sectionColors.length - 1;
+        const activeStop = Math.floor(scrollFraction * colorStops);
+        const stopFraction = (scrollFraction * colorStops) % 1;
+
+        const fromColor = hexToRgb(sectionColors[activeStop]);
+        const toColor = hexToRgb(sectionColors[activeStop + 1]);
+
+        if (fromColor && toColor) {
+            const r = Math.round(
+                fromColor.r + (toColor.r - fromColor.r) * stopFraction,
+            );
+            const g = Math.round(
+                fromColor.g + (toColor.g - fromColor.g) * stopFraction,
+            );
+            const b = Math.round(
+                fromColor.b + (toColor.b - fromColor.b) * stopFraction,
+            );
+            backgroundColor = `rgb(${r}, ${g}, ${b})`;
+        } else if (fromColor) {
+            backgroundColor = sectionColors[activeStop];
+        }
+    }
+
+    function hexToRgb(hex) {
+        if (!hex) return null;
+        const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result
+            ? {
+                  r: parseInt(result[1], 16),
+                  g: parseInt(result[2], 16),
+                  b: parseInt(result[3], 16),
+              }
+            : null;
+    }
+
     onMount(() => {
+        sections = Array.from(scrollContainer.querySelectorAll('section'));
         scrollContainer.addEventListener('scroll', handleScroll, {
             passive: true,
         });
+        updateBackgroundColor(); // Initial color
     });
 
     // Compute animation progress [0..1]
@@ -38,6 +89,7 @@
 <div
     bind:this={scrollContainer}
     class="main snap-y snap-mandatory h-screen w-full overflow-y-auto text-gray-200 select-none"
+    style="background-color: {backgroundColor};"
 >
     <!-- Hero -->
     <section
@@ -106,7 +158,7 @@
         </div>
     </section>
 
-    <!-- Project 1: Campus Cues -->
+    <!-- Project 2: Portfolio Match -->
     <section class="snap-start h-full w-full relative grid project-section">
         <div class="iframe-wrapper grid place-items-center w-full h-full p-6">
             <iframe
@@ -144,11 +196,9 @@
 
 <style>
     .main {
-        background: linear-gradient(to left, #e7c14f, #1398b6, #01aba6);
-        background-size: 150% 100%;
-        background-position: 0% 0%;
         scroll-behavior: smooth;
         scroll-snap-stop: always;
+        transition: background-color 0.2s ease-out;
     }
 
     .gradient-text {
