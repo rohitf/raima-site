@@ -105,13 +105,48 @@
             ></iframe>
         </div>
     </section>
+
+    <!-- Project 1: Campus Cues -->
+    <section class="snap-start h-full w-full relative grid project-section">
+        <div class="iframe-wrapper grid place-items-center w-full h-full p-6">
+            <iframe
+                class="{progress < 1
+                    ? 'pointer-events-none'
+                    : ''} w-full h-full rounded-lg shadow-md border-none smooth-anim"
+                src="https://portfolio-match.vercel.app/?demo"
+                allowfullscreen
+                style="
+                    transform-origin: right center;
+                    transform: rotateY({angle}deg) scale({scale});
+                    opacity: {opacity};
+                "
+            ></iframe>
+        </div>
+        <div
+            class="title-section grid place-items-center text-white px-12 my-6 rounded-tr-lg rounded-br-lg"
+        >
+            <div class="title min-w-64">
+                <h2 class="font-semibold text-3xl">Portfolio Match</h2>
+                <p class="text-lg mt-4">
+                    A web app designed to help students find and share their
+                    portfolios.
+                </p>
+                <ul class="languages list-none text-lg mt-4">
+                    <li>Svelte</li>
+                    <li>TypeScript</li>
+                    <li>Supabase</li>
+                    <li>Tailwind CSS</li>
+                </ul>
+            </div>
+        </div>
+    </section>
 </div>
 
 <style>
     .main {
         background: linear-gradient(to left, #e7c14f, #1398b6, #01aba6);
-        background-size: 200% 200%;
-        background-position: 0% 50%;
+        background-size: 150% 100%;
+        background-position: 0% 0%;
         scroll-behavior: smooth;
         scroll-snap-stop: always;
     }
@@ -143,6 +178,11 @@
         font-family: 'Lexend', sans-serif;
         grid-template-columns: min-content 1fr;
         grid-template-rows: auto;
+    }
+
+    .project-section:nth-child(odd) {
+        margin-top: 1em;
+        grid-template-columns: 1fr min-content;
     }
 
     .languages {
