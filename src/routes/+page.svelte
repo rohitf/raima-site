@@ -10,22 +10,26 @@
 >
     <!-- Hero -->
     <section
-        class="snap-start h-5/6 flex flex-col items-center justify-center p-5"
+        class="bio snap-start h-5/6 flex flex-col items-center justify-center p-5"
     >
         <div class="text-left max-w-screen-xl">
             <div class="text-white text-5xl font-bold mb-4">Hello, I'm</div>
             <div
-                class="text-[9rem] font-normal leading-[0.9] -ml-2 tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 via-green-500 to-orange-500 font-sans gradient-text mb-6"
+                class="text-[8rem] font-normal leading-[0.8] -ml-2 tracking-tight bg-gradient-to-r from-pink-500 via-purple-500 via-blue-500 via-green-500 to-orange-500 font-sans gradient-text mb-6"
             >
                 Raima
             </div>
-            <p class="mt-12 text-white text-lg font-mono max-w-xl">
+            <p class="mt-12 text-white text-lg max-w-xl">
                 I'm a first-year Computer Science student at Santa Clara
                 University, driven by a passion for creating meaningful digital
                 experiences through web and UX design. Through tutoring, app
                 design projects, and community leadership initiatives, I've
                 developed collaborative skills that bridge the gap between
                 innovative ideas and impactful execution.
+            </p>
+            <p class="mt-4 font-bold text-white text-lg max-w-xl">
+                Below, you'll see some of latest projects as an interactive demo
+                :)
             </p>
         </div>
     </section>
@@ -95,6 +99,10 @@
         animation: gradientShift 4s ease-in-out infinite;
     }
 
+    .bio {
+        font-family: 'Source Code Pro', serif;
+    }
+
     .project-section {
         font-family: 'Lexend', sans-serif;
         /* desktop: two columns, title + iframe */
@@ -102,7 +110,7 @@
         /* desktop: single‑row grid */
         grid-template-rows: auto;
     }
-/* 
+    /* 
     .project-section:nth-child(odd) {
         grid-template-columns: 1fr min-content;
     } */
